@@ -72,14 +72,14 @@ public class Convertir {
             String xml;
 
             if (jsonStr.trim().startsWith("[")) {
-                // Es una lista JSON
+
                 JSONArray jsonArray = new JSONArray(jsonStr);
-                // Lo envolvemos en un objeto raíz para convertirlo correctamente
+
                 JSONObject wrapper = new JSONObject();
                 wrapper.put("root", jsonArray);
                 xml = XML.toString(wrapper);
             } else {
-                // Es un objeto JSON normal
+
                 JSONObject json = new JSONObject(jsonStr);
                 xml = XML.toString(json);
             }
