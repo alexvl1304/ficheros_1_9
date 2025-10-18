@@ -1,3 +1,4 @@
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
 import java.nio.file.Files;
@@ -32,44 +33,64 @@ public class Convertir {
         }
     }
 
+    /**
+     * Convierte un fichero XML a JSON y lo guarda en la ruta especificada.
+     * @param rutaxml ruta del fichero XML
+     * @param rutajson ruta del fichero JSON
+     * @return si se ha guardado el fichero JSON con exito.
+     */
     public static boolean convertirXMLToJSON(String rutaxml, String rutajson){
 
         try{
-            // Leer el archivo XML
             String xml = new String(Files.readAllBytes(Paths.get(rutaxml)));
 
-            // Convertir a JSON
             JSONObject json = XML.toJSONObject(xml);
 
-            // Guardar como archivo JSON
             Files.write(Paths.get(rutajson), json.toString(4).getBytes());
 
             System.out.println("XML convertido a JSON correctamente.");
             return true;
         }catch (Exception e){
 
+            e.printStackTrace();
             System.out.println("Error al convertir XML");
             return false;
         }
     }
 
+    /**
+     * Convierte un fichero JSON a XML y lo guarda en la ruta especificada.
+     * @param rutajson ruta del fichero JSON
+     * @param rutaxml ruta del fichero XML
+     * @return si se ha guardado el fichero XML con exito.
+     */
     public static boolean convertirJSONToXML(String rutajson, String rutaxml){
 
         try{
-            // Leer el archivo JSON
             String jsonStr = new String(Files.readAllBytes(Paths.get(rutajson)));
 
-            // Convertir a XML
-            JSONObject json = new JSONObject(jsonStr);
-            String xml = XML.toString(json);
+            String xml;
 
-            // Guardar como archivo XML
+            if (jsonStr.trim().startsWith("[")) {
+                // Es una lista JSON
+                JSONArray jsonArray = new JSONArray(jsonStr);
+                // Lo envolvemos en un objeto raíz para convertirlo correctamente
+                JSONObject wrapper = new JSONObject();
+                wrapper.put("root", jsonArray);
+                xml = XML.toString(wrapper);
+            } else {
+                // Es un objeto JSON normal
+                JSONObject json = new JSONObject(jsonStr);
+                xml = XML.toString(json);
+            }
+
             Files.write(Paths.get(rutaxml), xml.getBytes());
 
             System.out.println("JSON convertido a XML correctamente.");
             return true;
         }catch (Exception e){
 
+            e.printStackTrace();
             System.out.println("Error al convertir XML");
             return false;
         }
