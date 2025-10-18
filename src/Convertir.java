@@ -32,32 +32,46 @@ public class Convertir {
         }
     }
 
-    public static boolean convertirXMLToJSON(String xml, String json){
+    public static boolean convertirXMLToJSON(String rutaxml, String rutajson){
 
-        // Leer el archivo XML
-        String xml = new String(Files.readAllBytes(Paths.get("archivo.xml")));
+        try{
+            // Leer el archivo XML
+            String xml = new String(Files.readAllBytes(Paths.get(rutaxml)));
 
-        // Convertir a JSON
-        JSONObject json = XML.toJSONObject(xml);
+            // Convertir a JSON
+            JSONObject json = XML.toJSONObject(xml);
 
-        // Guardar como archivo JSON
-        Files.write(Paths.get("archivo.json"), json.toString(4).getBytes());
+            // Guardar como archivo JSON
+            Files.write(Paths.get(rutajson), json.toString(4).getBytes());
 
-        System.out.println("XML convertido a JSON correctamente.");
+            System.out.println("XML convertido a JSON correctamente.");
+            return true;
+        }catch (Exception e){
+
+            System.out.println("Error al convertir XML");
+            return false;
+        }
     }
 
-    public static boolean convertirJSONToXML(String json, String xml){
+    public static boolean convertirJSONToXML(String rutajson, String rutaxml){
 
-        // Leer el archivo JSON
-        String jsonStr = new String(Files.readAllBytes(Paths.get("archivo.json")));
+        try{
+            // Leer el archivo JSON
+            String jsonStr = new String(Files.readAllBytes(Paths.get(rutajson)));
 
-        // Convertir a XML
-        JSONObject json = new JSONObject(jsonStr);
-        String xml = XML.toString(json);
+            // Convertir a XML
+            JSONObject json = new JSONObject(jsonStr);
+            String xml = XML.toString(json);
 
-        // Guardar como archivo XML
-        Files.write(Paths.get("archivo_convertido.xml"), xml.getBytes());
+            // Guardar como archivo XML
+            Files.write(Paths.get(rutaxml), xml.getBytes());
 
-        System.out.println("JSON convertido a XML correctamente.");
+            System.out.println("JSON convertido a XML correctamente.");
+            return true;
+        }catch (Exception e){
+
+            System.out.println("Error al convertir XML");
+            return false;
+        }
     }
 }
